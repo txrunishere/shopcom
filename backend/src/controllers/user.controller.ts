@@ -53,6 +53,7 @@ const handleRegisterUser = asyncHandler(async (req: Request, res: Response) => {
       },
       omit: {
         password: true,
+        isAdmin: true
       },
     });
 
