@@ -5,7 +5,7 @@ type IUser = {
 };
 
 type UserCredentials = IUser & {
-  username: string;
+  password: string;
   email: string;
 };
 
