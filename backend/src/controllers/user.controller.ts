@@ -53,7 +53,6 @@ const handleRegisterUser = asyncHandler(async (req: Request, res: Response) => {
       },
       omit: {
         password: true,
-        isAdmin: true
       },
     });
 
@@ -118,6 +117,7 @@ const handleLoginUser = asyncHandler(async (req: Request, res: Response) => {
       user: {
         id: user.id,
         username: user.username,
+        admin: user.isAdmin,
         email: user.email,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
