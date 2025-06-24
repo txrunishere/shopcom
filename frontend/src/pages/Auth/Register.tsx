@@ -29,7 +29,8 @@ const Register = () => {
 
       if (user?.success) {
         dispatch(setCredentials({ ...user?.user }));
-        navigate("/")
+        toast.success("User with email " + email + " register successfully!!");
+        navigate("/");
       }
     } catch (error) {
       toast.error((error as any).data?.error);
@@ -40,7 +41,7 @@ const Register = () => {
     if (userInfo) {
       navigate("/");
     }
-  }, []);
+  }, [navigate, userInfo]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black text-white px-4">
