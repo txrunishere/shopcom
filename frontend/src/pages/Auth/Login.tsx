@@ -4,6 +4,7 @@ import { useAppDispatch } from "../../hooks";
 import { setCredentials } from "../../features/auth/authSlice";
 import { useLoginMutation } from "../../features/api/userApiSlice";
 import { useAppSelector } from "../../hooks";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const email = useRef<HTMLInputElement>(null);
@@ -20,14 +21,15 @@ const Login = () => {
       const user = await handleLoginUser({
         email: email.current?.value,
         password: password.current?.value,
-      });
+      }).unwrap();
       console.log("user", user);
-      if (user.data?.success) {
-        dispatch(setCredentials({ ...user.data?.user }));
+      if (user?.success) {
+        dispatch(setCredentials({ ...user?.user }));
         navigate("/");
       }
+      toast.success(user?.message)
     } catch (error) {
-      console.log(error);
+      toast.error((error as any).data.error)
     }
   };
 
