@@ -23,11 +23,9 @@ const Navigation = () => {
         navigate("/login");
       }
     } catch (error) {
-      toast.error((error as any).data.error);
+      toast.error((error as any).data?.error);
     }
   };
-
-  console.log(dropDown);
 
   return (
     <nav className="h-full">

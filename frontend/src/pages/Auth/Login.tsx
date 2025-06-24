@@ -29,7 +29,7 @@ const Login = () => {
       }
       toast.success(user?.message)
     } catch (error) {
-      toast.error((error as any).data.error)
+      toast.error((error as any).data?.error)
     }
   };
 
