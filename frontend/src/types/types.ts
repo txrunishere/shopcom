@@ -7,6 +7,7 @@ type IUser = {
 type UserCredentials = IUser & {
   username: string;
   email: string;
+  isAdmin: boolean
 };
 
 export type {
