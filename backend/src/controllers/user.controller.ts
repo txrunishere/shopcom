@@ -117,7 +117,7 @@ const handleLoginUser = asyncHandler(async (req: Request, res: Response) => {
       user: {
         id: user.id,
         username: user.username,
-        admin: user.isAdmin,
+        isAdmin: user.isAdmin,
         email: user.email,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
