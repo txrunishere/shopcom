@@ -308,6 +308,9 @@ const handleGetAllUsers = asyncHandler(async (req: Request, res: Response) => {
     where: {
       isAdmin: false,
     },
+    omit: {
+      password: true
+    }
   });
 
   if (users) {
