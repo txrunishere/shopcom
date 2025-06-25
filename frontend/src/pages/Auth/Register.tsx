@@ -29,7 +29,7 @@ const Register = () => {
 
       if (user?.success) {
         dispatch(setCredentials({ ...user?.user }));
-        toast.success("User with email " + email + " register successfully!!");
+        toast.success("User with email " + user.user?.email + " register successfully!!");
         navigate("/");
       }
     } catch (error) {

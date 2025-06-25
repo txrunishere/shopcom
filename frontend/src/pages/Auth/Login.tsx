@@ -27,9 +27,14 @@ const Login = () => {
         dispatch(setCredentials({ ...user?.user }));
         navigate("/");
       }
-      toast.success(user?.message)
+      toast.success(user?.message);
     } catch (error) {
-      toast.error((error as any).data?.error)
+      const e = (error as any).data.error;
+      if (typeof e == "object") {
+        e.map((err: string) => toast.error(err));
+      } else {
+        toast.error(e);
+      }
     }
   };
 

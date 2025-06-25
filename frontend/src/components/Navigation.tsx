@@ -6,7 +6,7 @@ import { logout } from "../features/auth/authSlice";
 import { useLogoutMutation } from "../features/api/userApiSlice";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Navigation = () => {
   const [dropDown, setDropDown] = useState<boolean>(false);
@@ -15,6 +15,10 @@ const Navigation = () => {
   const navigate = useNavigate();
   const [handleUserLogout] = useLogoutMutation();
 
+  useEffect(() => {
+    setDropDown(false);
+  }, [navigate]);
+
   const handleLogout = async () => {
     try {
       const user = await handleUserLogout({}).unwrap();
@@ -22,6 +26,7 @@ const Navigation = () => {
         dispatch(logout());
         navigate("/login");
       }
+      setDropDown(false);
     } catch (error) {
       toast.error((error as any).data?.error);
     }
@@ -120,7 +125,7 @@ const Navigation = () => {
                           to="/admin/userlist"
                           className="block px-4 py-2 hover:bg-gray-100  hover:text-gray-700"
                         >
-                          Users 
+                          Users
                         </Link>
                       </li>
                       <li>
