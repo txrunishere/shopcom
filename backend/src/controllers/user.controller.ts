@@ -170,34 +170,46 @@ const handleUpdateCurrentUser = asyncHandler(
     const { email, username } = req.body;
 
     if (email || username) {
-      if (email == req.user?.email || username == req.user?.username) {
-        return res.status(400).json({
-          error: `Enter a unique username or email!!`,
-        });
-      }
-      try {
-        const updatedUser = await client.user.update({
-          where: {
-            id: req.user?.id,
-          },
-          data: {
-            username: username || req.user?.username,
-            email: email || req.user?.email,
-          },
-          omit: {
-            password: true,
-          },
-        });
+      if (email != req.user?.email || username != req.user?.username) {
+        try {
+          const user = await client.user.findFirst({
+            where: {
+              email: email,
+            },
+          });
+          if (user && user.email != req.user?.email) {
+            return res.status(400).json({
+              error: "Email already exists!!",
+            });
+          }
+          const updatedUser = await client.user.update({
+            where: {
+              id: req.user?.id,
+            },
+            data: {
+              username: username || req.user?.username,
+              email: email || req.user?.email,
+            },
+            omit: {
+              password: true,
+            },
+          });
 
-        if (updatedUser) {
-          return res.status(200).json({
-            success: true,
-            updatedUser,
+          if (updatedUser) {
+            return res.status(200).json({
+              success: true,
+              message: "User with email " + updatedUser.email + " updated successfully",
+              updatedUser,
+            });
+          }
+        } catch (error) {
+          return res.status(400).json({
+            error: "Something went wrong while update user",
           });
         }
-      } catch (error) {
+      } else {
         return res.status(400).json({
-          error: "Something went wrong update user",
+          error: `Enter a unique username or email!!`,
         });
       }
     } else {
