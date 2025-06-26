@@ -1,15 +1,24 @@
-type IUser = {
+type ICommon = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
 };
 
-type UserCredentials = IUser & {
+type UserCredentials = ICommon & {
   username: string;
   email: string;
-  isAdmin: boolean
+  isAdmin: boolean;
 };
 
-export type {
-  UserCredentials
-}
+type CategoryResult = {
+  success: boolean;
+  categories: Array<ICommon & { categoryName: string }>;
+};
+
+type CategoryReturnType = {
+  success: boolean;
+  message: string;
+  category: CategoryResult;
+};
+
+export type { UserCredentials, CategoryResult, CategoryReturnType };
