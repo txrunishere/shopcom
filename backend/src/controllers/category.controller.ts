@@ -160,7 +160,6 @@ const handleDeleteCategory = asyncHandler(
       return res.status(200).json({
         success: true,
         message: `Category with id ${deletedCategory.id} deleted successfully!!`,
-        deletedCategory: deletedCategory.id,
       });
     } catch (error: any) {
       if (error.code == "P2025") {
