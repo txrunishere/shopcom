@@ -10,6 +10,10 @@ const CategoryForm: FC<CategoryFormType> = ({
   width = "",
   isLoading,
 }) => {
+  const buttonClass = `bg-pink-500 mt-4 rounded-lg px-4 w-${width} text-white cursor-pointer ${
+    isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-pink-600"
+  } py-2`;
+
   return (
     <div className="">
       <form onSubmit={handleFn}>
@@ -19,26 +23,16 @@ const CategoryForm: FC<CategoryFormType> = ({
           placeholder="Enter Category here..."
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          disabled={isLoading}
         />
         <div className="flex justify-between">
-          <button
-            disabled={isLoading}
-            className={`bg-pink-500 mt-4 rounded-lg px-4 w-${width} text-white cursor-pointer ${
-              isLoading ? "opacity-50" : "opacity-100"
-            } hover:bg-pink-600 py-2`}
-          >
+          <button disabled={isLoading} className={buttonClass}>
             {buttonText}
           </button>
         </div>
       </form>
       {deleteFn && (
-        <button
-          disabled={isLoading}
-          className={`bg-pink-500 mt-4 text-white rounded-lg w-${width} px-4 cursor-pointer ${
-            isLoading ? "opacity-50" : "opacity-100"
-          } hover:bg-pink-600 py-2`}
-          onClick={deleteFn}
-        >
+        <button disabled={isLoading} className={buttonClass} onClick={deleteFn}>
           Delete
         </button>
       )}
