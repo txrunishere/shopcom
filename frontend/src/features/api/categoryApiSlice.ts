@@ -33,7 +33,6 @@ const categoryApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
       invalidatesTags: ["Category"]
-
     })
   }),
 });
