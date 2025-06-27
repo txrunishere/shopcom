@@ -19,13 +19,16 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(express.static("public"));
 
 // Routers
 import userRouter from "./routes/user.routes";
 import categoryRouter from "./routes/category.routes";
+import productRouter from "./routes/product.routes";
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/product", productRouter);
 
 app.listen(PORT, () => {
   console.log("Server is running on PORT: " + PORT);

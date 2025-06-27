@@ -13,13 +13,44 @@ model User {
   email     String   @unique
   isAdmin   Boolean  @default(false)
   password  String
+  reviews   Review[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Category {
-  id           String   @id @default(nanoid())
-  categoryName String   @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id           String    @id @default(nanoid())
+  categoryName String    @unique
+  products     Product[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Product {
+  id          String   @id @default(nanoid())
+  productName String
+  price       Int
+  brand       String
+  description String
+  image       String
+  stock       Int
+  status      Boolean
+  rating      Decimal  @default(0)
+  reviews     Review[]
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Review {
+  id        String   @id @default(nanoid())
+  rating    Int
+  comment   String
+  productId String
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
