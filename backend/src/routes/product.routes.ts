@@ -9,6 +9,7 @@ import {
   handleAddProductReview,
   handleGetProductById,
   handleGetProductReviews,
+  handleGetTopProducts
 } from "../controllers/product.controller";
 import { upload } from "../utils/multer.util";
 
@@ -18,6 +19,7 @@ router.use(authMidd);
 
 router.route("/").get(handleListProduct);
 router.route("/:productId/review").post(handleAddProductReview);
+router.route("/top").get(handleGetTopProducts)
 
 router.use(authorizeAdmin);
 

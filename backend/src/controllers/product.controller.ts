@@ -477,6 +477,42 @@ const handleAddProductReview = asyncHandler(
   }
 );
 
+/**
+ * Public Route
+ * desc -> Get Top Products
+ * route -> GET /products/top
+ */
+const handleGetTopProducts = asyncHandler(
+  async (req: Request, res: Response) => {
+    try {
+      const products = await client.product.findMany({
+        where: {
+          rating: {
+            gte: 4,
+          },
+        },
+      });
+
+      if (products && products.length > 0) {
+        return res.status(200).json({
+          success: true,
+          products,
+        });
+      } else {
+        return res.status(200).json({
+          success: true,
+          message: "No top products found",
+          products: [],
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        error: "Something went wrong while fetching top products",
+      });
+    }
+  }
+);
+
 export {
   handleCreateProduct,
   handleUpdateProduct,
@@ -486,4 +522,5 @@ export {
   handleAddProductReview,
   handleGetProductById,
   handleGetProductReviews,
+  handleGetTopProducts
 };
