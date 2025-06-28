@@ -1,6 +1,14 @@
 import { Routes, Route } from "react-router";
 import MainLayout from "../layout/MainLayout";
-import { Login, Register, Profile, UserList, AdminRoute, CategoryList } from "../pages";
+import {
+  Login,
+  Register,
+  Profile,
+  UserList,
+  AdminRoute,
+  CategoryList,
+  ProductList,
+} from "../pages";
 import { PrivateRoute } from "../components";
 
 const RouterProvider = () => {
@@ -10,6 +18,7 @@ const RouterProvider = () => {
         <Route path="/admin" element={<AdminRoute />}>
           <Route path="userlist" element={<UserList />} />
           <Route path="categorylist" element={<CategoryList />} />
+          <Route path="productlist" element={<ProductList />} />
         </Route>
 
         <Route path="" element={<PrivateRoute />}>

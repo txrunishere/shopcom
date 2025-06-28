@@ -35,8 +35,8 @@ type CategoryFormType = {
   handleFn: (e: FormEvent<HTMLFormElement>) => void;
   deleteFn?: () => void;
   buttonText?: string;
-  isLoading: boolean,
-  width?: string,
+  isLoading: boolean;
+  width?: string;
 };
 
 type ModelComponentType = {
@@ -46,11 +46,49 @@ type ModelComponentType = {
   handleFn: () => void;
 };
 
+type ProductModelState = ICommon & {
+  category?: ICategory;
+  productName: string;
+  brand: string;
+  price: number;
+  description: string;
+  image: string;
+  stock: number;
+  status: boolean;
+  rating: number;
+  categoryId: string;
+  reviews?: Array<ReviewModelState>;
+};
+
+type ProductReturnType = {
+  success: boolean;
+  products: Array<ProductModelState>;
+};
+
+type ProductMutationReturnType = {
+  success: boolean;
+  message: string;
+  product: ProductModelState;
+};
+
+type ReviewModelState = ICommon & {
+  rating: number;
+  comment: string;
+  productId: string;
+  userId: string;
+  product?: ProductModelState;
+  user?: UserCredentials;
+};
+
 export type {
   UserCredentials,
   CategoryResult,
   CategoryReturnType,
   CategoryFormType,
   ModelComponentType,
-  ICategory
+  ICategory,
+  ProductModelState,
+  ReviewModelState,
+  ProductReturnType,
+  ProductMutationReturnType
 };
