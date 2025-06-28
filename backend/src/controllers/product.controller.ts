@@ -43,6 +43,18 @@ const handleCreateProduct = asyncHandler(
     }
 
     try {
+      const isCategoryExists = await client.category.findFirst({
+        where: {
+          id: category,
+        },
+      });
+
+      if (!isCategoryExists) {
+        return res.status(404).json({
+          error: "Category not Found!!",
+        });
+      }
+
       const product = await client.product.create({
         data: {
           productName: productName,
@@ -53,6 +65,9 @@ const handleCreateProduct = asyncHandler(
           status: Boolean(status),
           image: productImage,
           categoryId: category,
+        },
+        include: {
+          category: true,
         },
       });
 
@@ -237,6 +252,87 @@ const handleChangeProductImage = asyncHandler(
 );
 
 /**
+ * Admin Route
+ * desc -> Get Product by ID
+ * route -> GET /product/:productId
+ */
+const handleGetProductById = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { productId } = req.params;
+
+    if (!productId) {
+      return res.status(400).json({
+        error: "Product ID is required!!",
+      });
+    }
+
+    try {
+      const product = await client.product.findFirst({
+        where: {
+          id: productId,
+        },
+        include: {
+          reviews: true,
+          category: true,
+        },
+      });
+
+      if (product) {
+        return res.status(200).json({
+          success: true,
+          product,
+        });
+      }
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  }
+);
+
+/**
+ * Admin Route
+ * desc -> Get Product's reviews
+ * route -> GET /product/:productId/reviews
+ */
+const handleGetProductReviews = asyncHandler(
+  async (req: Request, res: Response) => {
+    if (!req.params.productId) {
+      return res.status(400).json({
+        error: "Product Id is requried!!",
+      });
+    }
+
+    try {
+      const reviews = await client.product.findFirst({
+        where: {
+          id: req.params.productId,
+        },
+        select: {
+          reviews: true,
+        },
+      });
+
+      if (reviews && reviews?.reviews.length > 0) {
+        return res.status(200).json({
+          success: true,
+          reviews: reviews.reviews,
+        });
+      } else {
+        return res.status(200).json({
+          success: true,
+          message: "No reviews exist for this product yet.",
+          reviews: [],
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        error: "Something went wrong while fetching product reviews",
+      });
+    }
+  }
+);
+
+/**
  * Public Route
  * desc -> List Products
  * route -> GET /product/
@@ -296,13 +392,25 @@ const handleAddProductReview = asyncHandler(
         where: {
           id: productId,
         },
+        include: {
+          reviews: {
+            where: {
+              userId: req.user?.id,
+            },
+            select: {
+              userId: true,
+            },
+          },
+        },
       });
 
-      if (!product) {
-        return res.status(404).json({
-          error: "Product with ID " + productId + " not exists!!",
-        });
-      } else {
+      if (product) {
+        if (product?.reviews?.length > 0) {
+          return res
+            .status(400)
+            .json({ error: "You have already reviewed this product" });
+        }
+
         if (req.user) {
           const review = await client.review.create({
             data: {
@@ -348,8 +456,20 @@ const handleAddProductReview = asyncHandler(
               message: `Review of Product ${product.productName} by ${req.user.username} added successfully`,
               review,
             });
+          } else {
+            return res.status(500).json({
+              error: "Failed to add review or update product rating",
+            });
           }
+        } else {
+          return res.status(401).json({
+            error: "Not authorized, token failed!!",
+          });
         }
+      } else {
+        return res
+          .status(404)
+          .json({ error: `Product with ID ${productId} does not exist` });
       }
     } catch (error) {
       return res.status(500).json(error);
@@ -364,4 +484,6 @@ export {
   handleListProduct,
   handleChangeProductImage,
   handleAddProductReview,
+  handleGetProductById,
+  handleGetProductReviews,
 };
