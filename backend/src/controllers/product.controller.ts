@@ -5,6 +5,10 @@ import {
   addReviewValidationSchema,
   createProductValidationSchema,
 } from "../zod/product.zod";
+import {
+  uploadOnCloudinary,
+  removeFromCloudinary,
+} from "../utils/cloudinary.util";
 
 /**
  * Admin Route
@@ -55,6 +59,17 @@ const handleCreateProduct = asyncHandler(
         });
       }
 
+      const uploadProductImage = await uploadOnCloudinary(
+        productImage,
+        process.env.PRODUCT_FOLDER
+      );
+
+      if (!uploadProductImage) {
+        return res.status(500).json({
+          error: "Failed to upload product image",
+        });
+      }
+
       const product = await client.product.create({
         data: {
           productName: productName,
@@ -63,7 +78,7 @@ const handleCreateProduct = asyncHandler(
           price: parseInt(price),
           stock: parseInt(stock),
           status: Boolean(status),
-          image: productImage,
+          image: uploadProductImage?.url,
           categoryId: category,
         },
         include: {
@@ -212,7 +227,7 @@ const handleChangeProductImage = asyncHandler(
   async (req: Request, res: Response) => {
     const { productId } = req.params;
 
-    if (productId) {
+    if (!productId) {
       return res.status(400).json({
         error: "Product ID is required!!",
       });
@@ -229,16 +244,45 @@ const handleChangeProductImage = asyncHandler(
     }
 
     try {
-      const product = await client.product.update({
+      const product = await client.product.findFirst({
         where: {
           id: productId,
         },
-        data: {
-          image,
+        select: {
+          image: true,
+          id: true,
         },
       });
 
-      if (product) {
+      if (!product) {
+        return res.status(400).json({
+          error: "Product not Found!!",
+        });
+      }
+
+      await removeFromCloudinary(product.image);
+
+      const uplaod = await uploadOnCloudinary(
+        image,
+        process.env.PRODUCT_FOLDER
+      );
+
+      if (!uplaod) {
+        return res.status(500).json({
+          error: "Failed to upload new product image",
+        });
+      }
+
+      const updatedProduct = await client.product.update({
+        where: {
+          id: product.id,
+        },
+        data: {
+          image: uplaod.url,
+        },
+      });
+
+      if (updatedProduct) {
         return res.status(200).json({
           status: true,
           message: `Product's image updated successfully`,
@@ -246,7 +290,9 @@ const handleChangeProductImage = asyncHandler(
         });
       }
     } catch (error) {
-      return;
+      return res.status(500).json({
+        error: "Something went wrong while updating product image",
+      });
     }
   }
 );
@@ -522,5 +568,5 @@ export {
   handleAddProductReview,
   handleGetProductById,
   handleGetProductReviews,
-  handleGetTopProducts
+  handleGetTopProducts,
 };
