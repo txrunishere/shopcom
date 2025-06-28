@@ -11,7 +11,7 @@ import {
   handleGetProductReviews,
   handleGetTopProducts
 } from "../controllers/product.controller";
-import { upload } from "../utils/multer.util";
+import { upload } from "../middlewares/multer.middleware";
 
 const router = Router();
 

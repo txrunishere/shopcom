@@ -9,6 +9,7 @@ import {
   uploadOnCloudinary,
   removeFromCloudinary,
 } from "../utils/cloudinary.util";
+import { unlinkSync } from "fs";
 
 /**
  * Admin Route
@@ -19,9 +20,10 @@ const handleCreateProduct = asyncHandler(
   async (req: Request, res: Response) => {
     const { productName, price, brand, description, stock, status, category } =
       req.body;
+
     let productImage;
 
-    if (req.file) {
+    if (req.file?.path) {
       productImage = req.file.path;
     } else {
       return res.status(400).json({
@@ -41,6 +43,7 @@ const handleCreateProduct = asyncHandler(
     });
 
     if (!success) {
+      unlinkSync(productImage);
       return res.status(400).json({
         error: error.errors.map((err) => err.message),
       });
@@ -54,6 +57,7 @@ const handleCreateProduct = asyncHandler(
       });
 
       if (!isCategoryExists) {
+        unlinkSync(productImage);
         return res.status(404).json({
           error: "Category not Found!!",
         });
@@ -99,6 +103,7 @@ const handleCreateProduct = asyncHandler(
         });
       }
     } catch (error) {
+      unlinkSync(productImage);
       return res.status(500).json({ error });
     }
   }

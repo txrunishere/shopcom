@@ -41,10 +41,6 @@ const createProductValidationSchema = z.object({
     required_error: "Status is required",
     invalid_type_error: "Status must be a boolean",
   }),
-  productImage: z.string({
-    required_error: "Product image is required",
-    invalid_type_error: "Product image must be a string",
-  }),
 });
 
 const addReviewValidationSchema = z.object({
