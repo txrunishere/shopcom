@@ -48,8 +48,7 @@ const ProductList = () => {
 
     try {
       const { data } = await createProductTrigger(formData);
-      if (data) {
-        console.log(data);
+      if (data?.success) {
         toast.success(data.message);
       }
     } catch (error: any) {

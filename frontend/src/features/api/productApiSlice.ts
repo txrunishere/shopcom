@@ -1,5 +1,5 @@
 import { apiSlice } from "./apiSlice";
-import type { ProductReturnType } from "../../types/types";
+import type { ProductReturnType, ProductMutationReturnType } from "../../types/types";
 
 const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -9,7 +9,7 @@ const productApiSlice = apiSlice.injectEndpoints({
     listTopProducts: builder.query<ProductReturnType, void>({
       query: () => "/products/top",
     }),
-    createProduct: builder.mutation({
+    createProduct: builder.mutation<ProductMutationReturnType, FormData>({
       query: (data) => ({
         url: "/product/",
         method: "POST",

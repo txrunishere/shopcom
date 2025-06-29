@@ -71,6 +71,18 @@ type ProductMutationReturnType = {
   product: ProductModelState;
 };
 
+type ProductQueryArgType = {
+  productName: string;
+  brand: string;
+  price: number;
+  description: string;
+  image: string;
+  stock: number;
+  status: boolean;
+  rating: number;
+  categoryId: string;
+};
+
 type ReviewModelState = ICommon & {
   rating: number;
   comment: string;
@@ -90,5 +102,6 @@ export type {
   ProductModelState,
   ReviewModelState,
   ProductReturnType,
-  ProductMutationReturnType
+  ProductMutationReturnType,
+  ProductQueryArgType
 };
