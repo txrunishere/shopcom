@@ -98,7 +98,7 @@ const Navigation = () => {
                       </li>
                       <li>
                         <Link
-                          to="/admin/productlist"
+                          to="/admin/product"
                           className="block px-4 py-2 hover:bg-gray-100  hover:text-gray-700"
                         >
                           Products

@@ -92,6 +92,16 @@ type ReviewModelState = ICommon & {
   user?: UserCredentials;
 };
 
+type ProductCardModel = {
+  productName: string;
+  description: string;
+  image: string;
+  price: number;
+  reviews: number;
+  rating: number;
+  productId: string;
+};
+
 export type {
   UserCredentials,
   CategoryResult,
@@ -103,5 +113,6 @@ export type {
   ReviewModelState,
   ProductReturnType,
   ProductMutationReturnType,
-  ProductQueryArgType
+  ProductQueryArgType,
+  ProductCardModel,
 };

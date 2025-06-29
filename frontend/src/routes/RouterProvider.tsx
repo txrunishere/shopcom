@@ -7,7 +7,9 @@ import {
   UserList,
   AdminRoute,
   CategoryList,
+  CreateProduct,
   ProductList,
+  UpdateProduct,
 } from "../pages";
 import { PrivateRoute } from "../components";
 
@@ -15,10 +17,14 @@ const RouterProvider = () => {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
-        <Route path="/admin" element={<AdminRoute />}>
+        <Route path="admin" element={<AdminRoute />}>
           <Route path="userlist" element={<UserList />} />
           <Route path="categorylist" element={<CategoryList />} />
-          <Route path="productlist" element={<ProductList />} />
+          <Route path="product">
+            <Route path="" element={<ProductList />} />
+            <Route path="create-product" element={<CreateProduct />} />
+            <Route path=":productId" element={<UpdateProduct />} />
+          </Route>
         </Route>
 
         <Route path="" element={<PrivateRoute />}>
