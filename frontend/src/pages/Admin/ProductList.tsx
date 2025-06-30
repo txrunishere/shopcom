@@ -1,11 +1,13 @@
 import { ProductCard } from "../../components";
 import { useListProductQuery } from "../../features/api/productApiSlice";
+import AdminMenu from "./AdminMenu";
 
 const ProductList = () => {
   const { data: productData } = useListProductQuery();
 
   return (
     <section className="p-8">
+      <AdminMenu />
       <main className="flex flex-wrap gap-10">
         {productData?.products.length ? productData?.products.map((product) => (
           <ProductCard

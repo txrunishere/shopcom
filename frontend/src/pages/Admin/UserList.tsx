@@ -3,6 +3,7 @@ import { useGetAllUsersQuery } from "../../features/api/adminApiSlice";
 import { useDeleteUserMutation } from "../../features/api/adminApiSlice";
 import moment from "moment";
 import { useState } from "react";
+import AdminMenu from "./AdminMenu";
 
 const UserList = () => {
   const { data, isLoading } = useGetAllUsersQuery();
@@ -24,6 +25,7 @@ const UserList = () => {
 
   return (
     <div className="p-6">
+      <AdminMenu />
       <h1 className="text-4xl text-center font-bold mb-10">Users</h1>
       {isLoading ? (
         <p className="text-center">Loading</p>

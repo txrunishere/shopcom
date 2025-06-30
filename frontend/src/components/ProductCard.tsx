@@ -59,9 +59,9 @@ const ProductCard: FC<ProductCardModel> = ({
         </div>
       </div>
       {userInfo?.isAdmin && (
-        <div className="w-full flex gap-1">
+        <div className="w-full flex">
           <Link
-            className="py-1 px-2 w-full block text-center bg-pink-400 hover:bg-pink-500"
+            className="py-1 px-2 w-full border-r block text-center bg-pink-400 hover:bg-pink-500"
             to={productId}
           >
             Update

@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { CategoryForm, Model } from "../../components";
 import { useState, type FormEvent } from "react";
 import type { ICategory } from "../../types/types";
+import AdminMenu from "./AdminMenu";
 
 const CategoryList = () => {
   const [value, setValue] = useState<string>("");
@@ -90,6 +91,7 @@ const CategoryList = () => {
   return (
     <>
       <section className="mx-[10rem] flex flex-col p-4">
+        <AdminMenu />
         <h1 className="text-2xl font-bold">Manage Categories</h1>
         <div className="my-6">
           <CategoryForm

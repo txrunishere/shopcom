@@ -2,6 +2,7 @@ import { useState, useRef, type ChangeEvent, type FormEvent } from "react";
 import { useCreateProductMutation } from "../../features/api/productApiSlice";
 import { useListCategoriesQuery } from "../../features/api/categoryApiSlice";
 import { toast } from "react-toastify";
+import AdminMenu from "./AdminMenu";
 
 const CreateProduct = () => {
   const [createProductTrigger, { isLoading }] = useCreateProductMutation();
@@ -59,6 +60,7 @@ const CreateProduct = () => {
 
   return (
     <div>
+      <AdminMenu />
       <form
         className="max-w-3xl w-full mt-[5rem] mx-auto bg-gray-900 p-6 rounded-lg shadow-lg space-y-4"
         onSubmit={handleCreateProductSubmit}
